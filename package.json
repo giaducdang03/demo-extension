@@ -1,0 +1,98 @@
+{
+  "name": "demo-extension",
+  "displayName": "demo-extension",
+  "description": "",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.97.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "chat-sidebar-view",
+          "title": "Chat",
+          "icon": "media/chat-icon.svg"
+        }
+      ],
+      "auxiliaryBar": [
+        {
+          "id": "chat-secondary-view",
+          "title": "Chat Secondary",
+          "icon": "media/chat-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "chat-sidebar-view": [
+        {
+          "id": "chatView",
+          "name": "Chat",
+          "type": "webview"
+        }
+      ],
+      "auxiliaryBar": [
+        {
+          "id": "chatSecondary",
+          "name": "Chat",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "demo-extension.openChat",
+        "title": "Open Chat"
+      },
+      {
+        "command": "demo-extension.moveToSecondary",
+        "title": "Toggle Secondary View",
+        "icon": "$(split-horizontal)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "demo-extension.moveToSecondary",
+          "when": "view == chatView || view == chatSecondary",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.97.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.25.0",
+    "@typescript-eslint/parser": "^8.25.0",
+    "eslint": "^9.21.0",
+    "typescript": "^5.7.3",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "css-loader": "^6.7.1",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.4.2",
+    "webpack": "^5.76.0",
+    "webpack-cli": "^5.0.1",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
