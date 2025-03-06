@@ -1,17 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { vscode } from '../utils/vscodeApi';
 
 interface ChatProps {
-    onSendMessage: (message: string) => void;
     onLogout: () => void;
 }
 
-const Chat: React.FC<ChatProps> = ({ onSendMessage, onLogout }) => {
+const Chat: React.FC<ChatProps> = ({ onLogout }) => {
     const [message, setMessage] = useState('');
+
+    const handleLogout = useCallback(() => {
+        vscode.setState({ token: null });
+        onLogout();
+    }, [onLogout]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (message.trim()) {
-            onSendMessage(message);
+            const state = vscode.getState();
+            vscode.postMessage({
+                type: 'sendMessage',
+                message,
+                token: state.token
+            });
             setMessage('');
         }
     };
@@ -20,7 +30,7 @@ const Chat: React.FC<ChatProps> = ({ onSendMessage, onLogout }) => {
         <div className="chat-container">
             <div className="chat-header">
                 <h2>Chat</h2>
-                <button className="logout-btn" onClick={onLogout}>Logout</button>
+                <button className="logout-btn" onClick={handleLogout}>Logout</button>
             </div>
             <div className="messages" id="messages">
                 {/* Messages will be added here */}
